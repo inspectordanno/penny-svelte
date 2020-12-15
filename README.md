@@ -1,3 +1,3 @@
 ## penny-svelte
 
-Readaptation of https://penny.fyi in Svelte.
+Adaptation of https://penny.fyi in Svelte.
