@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Crimson+Text&family=Libre+Franklin:wght@700&family=Source+Sans+Pro:ital,wght@0,400;1,300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;500&family=Libre+Franklin:wght@700&family=Source+Sans+Pro:ital,wght@0,400;1,300&display=swap");
 
 :root {
   --dark-gray: #4d4d4d;
@@ -6,7 +6,7 @@
   --base-spacing: 24px;
   --padding-desktop: 80px;
   --padding-mobile: 48px;
-  --serif: "Crimson Text", serif;
+  --serif: "Crimson Pro", serif;
   --sans-serif: "Source Sans Pro", sans-serif;
 }
 

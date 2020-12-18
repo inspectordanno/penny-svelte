@@ -2,6 +2,25 @@
 </script>
 
 <style>
+    /* penny animation */
+    @keyframes rotate {
+        0% {
+            filter: grayscale(100%);
+            transform-origin: center;
+            transform: rotate(0deg);
+        }
+
+        50% {
+            filter: grayscale(100%);
+            transform-origin: center;
+            transform: rotate(360deg);
+        }
+
+        100% {
+            filter: grayscale(0%);
+        }
+    }
+
     .header {
         align-items: center;
         color: var(--light-gray);
@@ -20,6 +39,11 @@
     }
 
     .penny-image {
+        animation-name: rotate;
+        animation-delay: 0.5s;
+        animation-duration: 3s;
+        animation-timing-function: cubic-bezier(0.69, -0.03, 0.36, 0.99);
+        animation-fill-mode: forwards;
         width: 450px;
         height: 450px;
     }
