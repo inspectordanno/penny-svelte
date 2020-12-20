@@ -1,0 +1,43 @@
+{
+    "rounding": {
+        "tile": "1. Getting rid of the penny won't harm consumers or businesses.",
+        "paragraphs": [
+            [
+                "In a penniless world, the unit of a cent ($0.01) would not go away. Credit cards and digital payment systems would still be charged the exact price, down to the cent.",
+                "But cash transactions would be a different story. Because pennies wouldn't exist, all transactions paid for in cash would be rounded to the nearest nickel. This means a sale could only end in a 0 or a 5.",
+                "In some prices, the nearest nickel is cheaper than the price, and the price gets rounded down. This results in a gain to the customer, because they would be paying less than the sale originally. A customer can gain either <span class='light-green'>$0.01 (light green)<span/> or <span class='dark-green'>$0.02 (dark green)<span/> from rounding. In other instances, the nearest nickel is higher, and the price gets rounded up, resulting in a benefit to the store. A store can also gain either $0.01 <span class='light-red'>(light red)</span> or <span class='dark-red'>$0.02 (dark red) from rounding.</span>",
+                "Finally, there are prices that already end in a 0 or 5 and don't need to be rounded at all <span class='light-gray'>(light grey)</span>."
+            ],
+           "These are a series of one hundred items, sampled from a real life dataset containing over three thousand products from a convenience store chain. <span class='light-blue' Each rectangle represents the price of one item.</span> The data was supplied by Professor Raymond Lombra, a supporter of keeping the penny.",
+           "Lombra argues that because most items end in a 9, stores are most likely to benefit from a penniless world. In the graphic at right, <span class='light-red' a store would gain $0.01 from each product that is light red.</span>",
+           "A penny does not mean much on the individual level, but consider the collective implications of eliminating the penny. Merchants would gain millions, while customers would lose out.",
+           "The mean of all the rounding outcomes in the distribution is <span class='light-red'>$0.01 in favor of the store</span>. This means that in a penniless economy, on average, one could expect most individual items to be <span class='light-red'>rounded up $0.01.</span>",
+           [
+            "However, there is an important caveat of rounding that serves a powerful counterpoint to Lombra’s model. It is evident that when people purchase goods as a store, they are not buying one item at a time. Rather, a transaction can consist of multiple items, and may also include tax.",
+            "At right is a collection of one hundred real <span class='purple'>transactions</span> from another convenience store chain, sampled in real-time from a database. <span class='purple'>These transactions are composed of one or more items, and may or may not include tax.</span> In short, this data is more realistic representation of how people buy things. Professor Robert Whaples, a proponent of eliminating the penny, provided this data."
+           ],
+           "Transactions have ending numbers that are much more varied than individual items. The colors are much more diverse than the previous item distribution, indicating a mixture of rounding outcomes.",
+           "When the transactions are analyzed as a whole, it becomes even more clear that the bias towards stores has disappeared. There is a healthy proportion of transactions that benefit both stores and consumers, in addition to prices that do not get rounded.",
+           "Furthermore, the mean of this distribution, rounded to the nearest nickel, is <span class='light-gray'>$0.00</span>. This indicates that an “average” transaction would undergo <span class='light-gray'>no rounding</span>. In practice, because the distribution is so diverse, there would be a wide variety of rounding outcomes. But as a whole, rounding would balance out. Therefore, eliminating the penny and rounding to the nearest nickel would have a nil effect. Because transactions are so varied, it would be very hard for businesses to price-fix. In countries that have eliminated the penny (such as Canada), legislation mandates that it is only the final transaction total that can be rounded, so customers would not have to worry about stores rounding every item."
+        ]
+    },
+    "seinorage": {
+        "title": "2. The penny costs the federal government millions of dollars each year.",
+        "paragraphs": [
+            "Before 1982, the penny was made of 95% copper and 5% zinc. In 1982, the composition changed to 97.5% zinc and 2.5% copper because zinc was cheaper.",
+            "The price of zinc is quite variable, and it is not uncommon for the metal to experience year-to-year changes in price in regards to supply and demand. What is concerning, however, is that starting in the 2000’s, the price of zinc has absolutely skyrocketed. The cost of zinc is rising because it is a versatile metal with a variety of applications, especially in infrastructure. China has been a core driver of raw materials prices in recent years, especially as it continues to urbanize. In 2016, the Chinese spent $2 trillion on infrastructure, more than the U.S. and Europe combined!",
+            "This graph presents the cost to mint a penny in the 2000's. Before 2006, a penny <span class='dark-green'>cost less than one cent</span> to make. Since then, a penny has always <span class='dark-red'>cost more than itself</span> to make, reaching a high of over two cents.",
+            "In isolation, a cent might not seem like a big deal. However, the U.S. Mint produces 13 billion pennies each year. The Mint “sells” the coins to the U.S. Treasury, who pays the full production cost of the coins. The difference between the face value of the coins and the cost to produce them is known as seigniorage. Before 2006, seigniorage was a convenient way for the government to make money on pennies, as they <span class='dark-green'>cost less to produce than they were worth</span>. But since then, the government has been <span class='dark-red'>losing millions on the penny each year.</span>"
+        ]
+    },
+    "buying-power": {
+        "title": "3. Pennies have no value.",
+        "paragraphs": [
+            "Price inflation has rendered the penny a worthless unit of currency. The graphic at right shows how the buying power of the penny has sharply decreased over the last 100 years.",
+            "In 1910, the average wage was 22 cents per hour. The penny had roughly the buying power of today's quarter.",
+            "Americans made less, but their money could go a lot further. Depending on the item, a penny could buy 20, 30, even 100 times more than what it does now.",
+            "Price inflation alone isn’t a good reason for eliminating small currency. For example, the nickel is another coin with paltry buying power. But getting rid of it would cause prices to be rounded to the nearest dime, which would hurt consumers a lot more.",
+            "The penny should be retired because it is too small to be meaningful in today's economy."
+        ]
+    } 
+}
