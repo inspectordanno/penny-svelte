@@ -1,4 +1,7 @@
 <script>
+    import { isArray } from "util";
+
+    export let text;
 </script>
 
 <style>
@@ -34,27 +37,18 @@
 
 <div class="scroll-container">
     <div class="text-container">
-        <div class="section-title">
-            1. Getting rid of the penny won't harm consumers or businesses.
-        </div>
-        <div class="paragraph">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rerum qui
-            harum enim sequi atque odit corrupti itaque debitis aspernatur
-            neque? Perspiciatis veritatis quibusdam velit mollitia repellat esse
-            blanditiis doloribus assumenda.
-        </div>
-        <div class="paragraph">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rerum qui
-            harum enim sequi atque odit corrupti itaque debitis aspernatur
-            neque? Perspiciatis veritatis quibusdam velit mollitia repellat esse
-            blanditiis doloribus assumenda.
-        </div>
-        <div class="paragraph">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rerum qui
-            harum enim sequi atque odit corrupti itaque debitis aspernatur
-            neque? Perspiciatis veritatis quibusdam velit mollitia repellat esse
-            blanditiis doloribus assumenda.
-        </div>
+        <div class="section-title">{text.title}</div>
+        {#each text.paragraphs as block}
+            <div>
+                {#if Array.isArray(block)}
+                    {#each block as subParagraph}
+                        <div>{subParagraph}</div>
+                    {/each}
+                {:else}
+                    <div>{block}</div>
+                {/if}
+            </div>
+        {/each}
     </div>
     <div class="graphic-container" />
 </div>

@@ -1,6 +1,7 @@
 <script>
 	import Header from "./Header.svelte";
 	import Scroll from "./Scroll.svelte";
+	import text from "../util/text.json";
 </script>
 
 <style>
@@ -8,5 +9,5 @@
 
 <div>
 	<Header />
-	<Scroll />
+	<Scroll text={text.rounding} />
 </div>
