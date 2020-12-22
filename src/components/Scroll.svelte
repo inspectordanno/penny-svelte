@@ -3,6 +3,9 @@
     export let topic;
     export let activeBlock;
 
+    let graphicContainerWidth;
+    let graphicContainerHeight;
+
     //sets data attribute of block
     const getDataAttribute = (block, i) => {
         if (block.description) {
@@ -73,5 +76,10 @@
             </div>
         {/each}
     </div>
-    <div class="graphic-container" />
+    <div
+        bind:clientWidth={graphicContainerWidth}
+        bind:clientHeight={graphicContainerHeight}
+        class="graphic-container">
+        <slot />
+    </div>
 </div>
