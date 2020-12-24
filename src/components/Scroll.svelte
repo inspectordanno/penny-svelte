@@ -1,17 +1,19 @@
 <script>
+    import {
+        activeBlock,
+        graphicContainerWidth,
+        windowHeight,
+    } from "../store/store";
+
     export let text;
     export let topic;
-    export let activeBlock;
-
-    let graphicContainerWidth;
-    let graphicContainerHeight;
 
     //sets data attribute of block
     const getDataAttribute = (block, i) => {
         if (block.description) {
             return `${topic}-${block.description}`;
         }
-        return `${topic}-${i}`;
+        return `${topic}-${i + 1}`;
     };
 </script>
 
@@ -53,6 +55,15 @@
     .sub-paragraph {
         margin-bottom: 32px;
     }
+
+    .sticky {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        position: sticky;
+        top: 0;
+        width: 100%;
+    }
 </style>
 
 <div class="scroll-container">
@@ -60,7 +71,7 @@
         <div class="section-title">{text.title}</div>
         {#each text.paragraphs as block, i}
             <div
-                class="block {activeBlock === getDataAttribute(block, i) ? 'active-block' : ''}"
+                class="block {$activeBlock === getDataAttribute(block, i) ? 'active-block' : ''}"
                 data-step={getDataAttribute(block, i)}>
                 {#if Array.isArray(block)}
                     {#each block as subParagraph, ii}
@@ -76,10 +87,9 @@
             </div>
         {/each}
     </div>
-    <div
-        bind:clientWidth={graphicContainerWidth}
-        bind:clientHeight={graphicContainerHeight}
-        class="graphic-container">
-        <slot />
+    <div bind:clientWidth={$graphicContainerWidth} class="graphic-container">
+        <div style={`height: ${$windowHeight}px;`} class="sticky">
+            <slot />
+        </div>
     </div>
 </div>

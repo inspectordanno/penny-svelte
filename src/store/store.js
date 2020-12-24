@@ -1,3 +1,5 @@
 import { writable } from "svelte/store";
 
-export const graphicDimensions = { width: 0, height: 0 };
+export const activeBlock = writable("");
+export const graphicContainerWidth = writable(0);
+export const windowHeight = writable(0);

@@ -18,6 +18,8 @@
     "dev": "webpack-dev-server --content-base public"
   },
   "dependencies": {
+    "csv-loader": "^3.0.3",
+    "lodash": "^4.17.20",
     "scrollama": "^2.2.1"
   }
 }
