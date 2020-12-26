@@ -125,6 +125,8 @@
     //use tweened data in html
     let tweenedData = tweened(formattedLombraData); // initial state
 
+    // important / to-do: tween.set() and tween.update() return a promise - this suggests that animations can be chained?
+
     const setData = (dataStep) => {
         switch (dataStep) {
             // LOMBRA
@@ -152,7 +154,6 @@
                     );
                 });
                 break;
-            case "rounding-6":
             // WHAPLES
             case "rounding-7":
                 data.set(
