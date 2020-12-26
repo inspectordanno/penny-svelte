@@ -4,13 +4,10 @@
     import { tweened } from "svelte/motion";
     import sampleSize from "lodash/sampleSize";
     import round from "lodash/round";
-    import orderBy from "lodash/orderBy";
     import meanBy from "lodash/meanBy";
     import { activeBlock, graphicContainerWidth } from "../store/store";
     import lombraData from "../../public/assets/lombra_sample.csv";
     import whaplesData from "../../public/assets/whaples_sample.csv";
-    import { element } from "svelte/internal";
-    import { HTMLDataListElement } from "lodash/_freeGlobal";
 
     const numDatapoints = 100;
 
@@ -116,6 +113,13 @@
         };
     };
 
+    const getRemainderMean = (data) => {
+        const mean = meanBy(data, "remainder");
+        const meanRounded = round(mean, 2);
+
+        return { mean, meanRounded };
+    };
+
     const formattedLombraData = formatData(sampledLombraData, "lombra");
     const formattedWhaplesData = formatData(sampledWhaplesData, "whaples");
 
@@ -139,14 +143,16 @@
                 break;
             case "rounding-5":
                 data.update((item) => {
-                    setColor(item, null, colors.lightRed);
+                    setColor(
+                        item,
+                        null,
+                        colorScale(
+                            getRemainderMean(formattedLombraData).meanRounded
+                        )
+                    );
                 });
                 break;
             case "rounding-6":
-                data.update((item) => {
-                    setColor(item, null, colors.gray);
-                });
-                break;
             // WHAPLES
             case "rounding-7":
                 data.set(
@@ -156,6 +162,24 @@
                 );
             case "rounding-8":
                 data.update((item) => setColor(item, "remainderColor"));
+                break;
+            case "rounding-9":
+                data.set(
+                    orderData(formattedWhaplesData).map((item) =>
+                        setColor(item, "remainderColor")
+                    )
+                );
+                break;
+            case "rounding-10":
+                data.update((item) => {
+                    setColor(
+                        item,
+                        null,
+                        colorScale(
+                            getRemainderMean(formattedWhaplesData).meanRounded
+                        )
+                    );
+                });
                 break;
         }
     };
