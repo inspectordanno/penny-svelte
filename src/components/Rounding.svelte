@@ -123,6 +123,7 @@
     const formattedLombraData = formatData(sampledLombraData, "lombra");
     const formattedWhaplesData = formatData(sampledWhaplesData, "whaples");
 
+    //use tweened data in html
     let tweenedData = tweened(formattedLombraData); // initial state
 
     const setData = (dataStep) => {
