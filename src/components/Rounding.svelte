@@ -197,5 +197,6 @@
 {:else}
     <svg width={`${$graphicContainerWidth}px`}>
         <rect />
+        <!-- tweened data each block -->
     </svg>
 {/if}
