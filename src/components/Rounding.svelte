@@ -1,5 +1,7 @@
 <script>
     import { scaleLinear } from "d3-scale";
+    import { onMount } from "svelte";
+    import { tweened } from "svelte/motion";
     import sampleSize from "lodash/sampleSize";
     import round from "lodash/round";
     import orderBy from "lodash/orderBy";
@@ -7,6 +9,18 @@
     import { activeBlock, graphicContainerWidth } from "../store/store";
     import lombraData from "../../public/assets/lombra_sample.csv";
     import whaplesData from "../../public/assets/whaples_sample.csv";
+    import { element } from "svelte/internal";
+    import { HTMLDataListElement } from "lodash/_freeGlobal";
+
+    const numDatapoints = 100;
+
+    let sampledLombraData;
+    let sampledWhaplesData;
+
+    onMount(() => {
+        sampledLombraData = sampleSize(lombraData, numDatapoints);
+        sampledWhaplesData = sampleSize(whaplesData, numDatapoints);
+    });
 
     const colors = {
         red: "#a34a4a",
@@ -14,7 +28,7 @@
         gray: "#949494",
         lightGreen: "#70866f",
         green: "4a774a",
-        lightblue: "#8fa2b3",
+        lightBlue: "#8fa2b3",
         lavender: "#a1a1af",
     };
 
@@ -36,8 +50,8 @@
     const rectHeight = 35;
     const numCols = 10;
 
-    const getGridPositions = (numElements, i) => {
-        const numRows = numElements / numCols; //only works if there is no remainder; i.e. a whole number of rows and columns!
+    const getGridPosition = (i) => {
+        const numRows = arr.length / numCols; //only works if there is no remainder; i.e. a whole number of rows and columns!
 
         const widthWhiteSpace = gridWidth - numCols * rectWidth;
         const heightWhiteSpace = gridHeight - numRows * rectHeight;
@@ -46,40 +60,105 @@
         const colSpace = heightWhiteSpace / (numRows - 1);
 
         const x = (i % numCols) * (rectWidth * rowSpace);
-        const y = (i % rowRows) * (rectHeight * colSpace);
+        const y = (i % numRows) * (rectHeight * colSpace);
 
         return { x, y };
     };
 
-    const formatData = (csvData) => {
-        console.log(csvData);
-        const numberOfTransactions = 100;
-        const sampledData = sampleSize(csvData, numberOfTransactions);
+    const formatData = (sampledData, dataSource) => {
+        const sourceColors = {
+            lombra: colors.lightBlue,
+            whaples: colors.lavender,
+        };
 
         const formattedData = sampledData.map((item, i) => {
-            const price = item.price ? +item.price : +item.post_tax_amount; //this is the price that will be displayed to the screen
+            const price =
+                dataSource === "lombra" ? +item.price : +item.post_tax_amount; //this is the price that will be displayed to the screen
             const priceRounded = roundToNickel(price); //this is the price that is rounded to the nearest nickel
             const remainder = round(price - priceRounded, 2); //this calculates how much is gained or lost by rounding to the nearest nickel
             const category = item.category; //category of item (lombra only)
-            const color = colorScale(remainder);
-            const { x, y } = getGridPositions(sampledData.length, i);
+            const sourceColor = sourceColors[dataSource];
+            const remainderColor = colorScale(item.remainder);
+            const { x, y } = getGridPosition(i);
 
             return {
                 price,
                 priceRounded,
                 remainder,
                 ...(category && { category }),
-                color,
+                sourceColor,
+                remainderColor,
                 x,
                 y,
             };
         });
 
-        console.log(formattedData);
+        return formattedData;
     };
 
-    formatData(lombraData);
-    formatData(whaplesData);
+    const orderData = (data) => {
+        const sorted = data.sort((a, b) => a.remainder - b.remainder);
+        return sorted.map(element, (i) => {
+            const { x, y } = gridGridPosition(i);
+            return {
+                ...element,
+                x,
+                y,
+            };
+        });
+    };
+
+    const setColor = (element, colorType, customColor) => {
+        const color = colorType ? element[colorType] : customColor;
+        return {
+            ...element,
+            color,
+        };
+    };
+
+    const formattedLombraData = formatData(sampledLombraData, "lombra");
+    const formattedWhaplesData = formatData(sampledWhaplesData, "whaples");
+
+    let tweenedData = tweened(formattedLombraData); // initial state
+
+    const setData = (dataStep) => {
+        switch (dataStep) {
+            // LOMBRA
+            case "rounding-2":
+                data.update((item) => setColor(item, "sourceColor"));
+                break;
+            case "rounding-3":
+                data.update((item) => setColor(item, "remainderColor"));
+                break;
+            case "rounding-4":
+                data.set(
+                    orderData(formattedLombraData).map((item) =>
+                        setColor(item, "remainderColor")
+                    )
+                );
+                break;
+            case "rounding-5":
+                data.update((item) => {
+                    setColor(item, null, colors.lightRed);
+                });
+                break;
+            case "rounding-6":
+                data.update((item) => {
+                    setColor(item, null, colors.gray);
+                });
+                break;
+            // WHAPLES
+            case "rounding-7":
+                data.set(
+                    formattedWhaplesData.map((transaction) =>
+                        setColor(transaction, "sourceColor")
+                    )
+                );
+            case "rounding-8":
+                data.update((item) => setColor(item, "remainderColor"));
+                break;
+        }
+    };
 </script>
 
 <style>
