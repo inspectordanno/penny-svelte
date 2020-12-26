@@ -11,14 +11,6 @@
 
     const numDatapoints = 100;
 
-    let sampledLombraData;
-    let sampledWhaplesData;
-
-    onMount(() => {
-        sampledLombraData = sampleSize(lombraData, numDatapoints);
-        sampledWhaplesData = sampleSize(whaplesData, numDatapoints);
-    });
-
     const colors = {
         red: "#a34a4a",
         lightRed: "#a0716e",
@@ -62,11 +54,13 @@
         return { x, y };
     };
 
-    const formatData = (sampledData, dataSource) => {
+    const formatData = (dataSource) => {
         const sourceColors = {
             lombra: colors.lightBlue,
             whaples: colors.lavender,
         };
+
+        const sampledData = sampleSize(lombraData, numDatapoints);
 
         const formattedData = sampledData.map((item, i) => {
             const price =
@@ -120,8 +114,13 @@
         return { mean, meanRounded };
     };
 
-    const formattedLombraData = formatData(sampledLombraData, "lombra");
-    const formattedWhaplesData = formatData(sampledWhaplesData, "whaples");
+    let formattedLombraData;
+    let formattedWhaplesData;
+
+    onMount(() => {
+        formattedLombraData = formatData(lombraData, numDatapoints);
+        formattedWhaplesData = formatData(whaplesData, numDatapoints);
+    });
 
     //use tweened data in html
     let tweenedData = tweened(formattedLombraData); // initial state
