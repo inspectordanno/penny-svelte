@@ -1,24 +1,21 @@
 <script>
     import { scaleLinear } from "d3-scale";
-    import { onMount } from "svelte";
-    import { tweened } from "svelte/motion";
     import sampleSize from "lodash/sampleSize";
     import round from "lodash/round";
     import meanBy from "lodash/meanBy";
-    import { activeBlock, graphicContainerWidth } from "../store/store";
+    import { activeBlock } from "../store/store";
     import lombraData from "../../public/assets/lombra_sample.csv";
     import whaplesData from "../../public/assets/whaples_sample.csv";
-
-    const numDatapoints = 100;
+    import Rect from "./Rect.svelte";
 
     const colors = {
-        red: "#a34a4a",
-        lightRed: "#a0716e",
-        gray: "#949494",
+        red: "#e96a6a",
+        lightRed: "#e4a19d",
+        gray: "#d3d3d3",
         lightGreen: "#70866f",
-        green: "4a774a",
-        lightBlue: "#8fa2b3",
-        lavender: "#a1a1af",
+        green: "6aaa6a",
+        lightBlue: "#cce7ff",
+        lavender: "#e6e6fa",
     };
 
     const colorScale = scaleLinear()
@@ -33,34 +30,34 @@
 
     const roundToNickel = (price) => Math.round(price * 20) / 20;
 
+    const numDatapoints = 100;
     const gridWidth = 800;
     const gridHeight = 500;
     const rectWidth = 65;
     const rectHeight = 35;
     const numCols = 10;
+    const numRows = numDatapoints / numCols; //only works if there is no remainder; i.e. a whole number of rows and columns!
 
     const getGridPosition = (i) => {
-        const numRows = arr.length / numCols; //only works if there is no remainder; i.e. a whole number of rows and columns!
+        const currentRow = Math.floor(i / 10);
 
         const widthWhiteSpace = gridWidth - numCols * rectWidth;
         const heightWhiteSpace = gridHeight - numRows * rectHeight;
 
-        const rowSpace = widthWhiteSpace / (numCols - 1);
-        const colSpace = heightWhiteSpace / (numRows - 1);
+        const rowSpace = heightWhiteSpace / (numRows - 1);
+        const colSpace = widthWhiteSpace / (numCols - 1);
 
-        const x = (i % numCols) * (rectWidth * rowSpace);
-        const y = (i % numRows) * (rectHeight * colSpace);
+        const x = (i % numCols) * (rectWidth + colSpace);
+        const y = currentRow * (rectHeight + rowSpace);
 
         return { x, y };
     };
 
-    const formatData = (dataSource) => {
+    const formatData = (sampledData, dataSource) => {
         const sourceColors = {
             lombra: colors.lightBlue,
             whaples: colors.lavender,
         };
-
-        const sampledData = sampleSize(lombraData, numDatapoints);
 
         const formattedData = sampledData.map((item, i) => {
             const price =
@@ -69,7 +66,7 @@
             const remainder = round(price - priceRounded, 2); //this calculates how much is gained or lost by rounding to the nearest nickel
             const category = item.category; //category of item (lombra only)
             const sourceColor = sourceColors[dataSource];
-            const remainderColor = colorScale(item.remainder);
+            const remainderColor = colorScale(remainder);
             const { x, y } = getGridPosition(i);
 
             return {
@@ -87,6 +84,16 @@
         return formattedData;
     };
 
+    const colorData = (data, fillType, customFill) => {
+        if (fillType) {
+            return data.map((element) => ({
+                ...element,
+                fill: element[fillType],
+            }));
+        }
+        return data.map((element) => ({ ...element, fill: customFill }));
+    };
+
     const orderData = (data) => {
         const sorted = data.sort((a, b) => a.remainder - b.remainder);
         return sorted.map(element, (i) => {
@@ -99,14 +106,6 @@
         });
     };
 
-    const setColor = (element, colorType, customColor) => {
-        const color = colorType ? element[colorType] : customColor;
-        return {
-            ...element,
-            color,
-        };
-    };
-
     const getRemainderMean = (data) => {
         const mean = meanBy(data, "remainder");
         const meanRounded = round(mean, 2);
@@ -114,16 +113,19 @@
         return { mean, meanRounded };
     };
 
-    let formattedLombraData;
-    let formattedWhaplesData;
+    const sampledLombraData = sampleSize(lombraData, numDatapoints);
+    const sampledWhaplesData = sampleSize(whaplesData, numDatapoints);
 
-    onMount(() => {
-        formattedLombraData = formatData(lombraData, numDatapoints);
-        formattedWhaplesData = formatData(whaplesData, numDatapoints);
-    });
+    const formattedLombraData = formatData(sampledLombraData, "lombra");
+    const formattedWhaplesData = formatData(sampledWhaplesData, "whaples");
 
-    //use tweened data in html
-    let tweenedData = tweened(formattedLombraData); // initial state
+    const meanColorLombra = colorScale(
+        getRemainderMean(formattedLombraData).meanRounded
+    );
+
+    const meanColorWhaples = colorScale(
+        getRemainderMean(formattedWhaplesData).meanRounded
+    );
 
     // important / to-do: tween.set() and tween.update() return a promise - this suggests that animations can be chained?
 
@@ -131,72 +133,48 @@
         switch (dataStep) {
             // LOMBRA
             case "rounding-2":
-                data.update((item) => setColor(item, "sourceColor"));
-                break;
+                return colorData(sampledLombraData, "sourceColor");
             case "rounding-3":
-                data.update((item) => setColor(item, "remainderColor"));
-                break;
+                return colorData(sampledLombraData, "remainderColor");
             case "rounding-4":
-                data.set(
-                    orderData(formattedLombraData).map((item) =>
-                        setColor(item, "remainderColor")
-                    )
+                return orderData(
+                    colorData(sampledLombraData, "remainderColor")
                 );
-                break;
             case "rounding-5":
-                data.update((item) => {
-                    setColor(
-                        item,
-                        null,
-                        colorScale(
-                            getRemainderMean(formattedLombraData).meanRounded
-                        )
-                    );
-                });
-                break;
+                return orderData(
+                    colorData(sampledLombraData, null, meanColorLombra)
+                );
             // WHAPLES
             case "rounding-7":
-                data.set(
-                    formattedWhaplesData.map((transaction) =>
-                        setColor(transaction, "sourceColor")
-                    )
-                );
+                return colorData(sampledWhaplesData, "sourceColor");
             case "rounding-8":
-                data.update((item) => setColor(item, "remainderColor"));
-                break;
+                return colorData(sampledWhaplesData, "remainderColor");
             case "rounding-9":
-                data.set(
-                    orderData(formattedWhaplesData).map((item) =>
-                        setColor(item, "remainderColor")
-                    )
+                return orderData(
+                    colorData(sampledWhaplesData, "remainderColor")
                 );
-                break;
             case "rounding-10":
-                data.update((item) => {
-                    setColor(
-                        item,
-                        null,
-                        colorScale(
-                            getRemainderMean(formattedWhaplesData).meanRounded
-                        )
-                    );
-                });
-                break;
+                return orderData(
+                    colorData(sampledLombraData, null, meanColorWhaples)
+                );
         }
     };
+
+    $: tweenedData = setData($activeBlock); //rerun every time step gets updated
 </script>
 
 <style>
 </style>
 
-{#if $activeBlock === 'rounding-1'}
+{#if $activeBlock === 'rounding-1' || $activeBlock === ''}
     <img
-        width={'100%'}
+        width="100%"
         src="./assets/rounding-overview.png"
         alt="rounding-overview" />
 {:else}
-    <svg width={`${$graphicContainerWidth}px`}>
-        <rect />
-        <!-- tweened data each block -->
+    <svg width={`${gridWidth}px`} height={`${gridHeight}px`}>
+        {#each tweenedData as { x, y, fill }}
+            <Rect {x} {y} width={rectWidth} height={rectHeight} {fill} />
+        {/each}
     </svg>
 {/if}
