@@ -70,15 +70,15 @@
             const { x, y } = getGridPosition(i);
 
             return {
+                x,
+                y,
+                id: i,
                 price,
                 priceRounded,
                 remainder,
                 ...(category && { category }),
                 sourceColor,
                 remainderColor,
-                x,
-                y,
-                id: 0,
             };
         });
 
