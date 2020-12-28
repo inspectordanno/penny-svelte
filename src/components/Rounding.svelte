@@ -97,8 +97,8 @@
 
     const orderData = (data) => {
         const sorted = data.sort((a, b) => a.remainder - b.remainder);
-        return sorted.map(element, (i) => {
-            const { x, y } = gridGridPosition(i);
+        return sorted.map((element, i) => {
+            const { x, y } = getGridPosition(i);
             return {
                 ...element,
                 x,
