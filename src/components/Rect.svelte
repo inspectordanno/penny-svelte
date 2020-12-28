@@ -19,4 +19,4 @@
     $: $tweenedFill = fill;
 </script>
 
-<rect x={$tweenedX} y={$tweenedY} {width} {height} fill={$tweenedFill} />
+<rect {x} {y} {width} {height} fill={$tweenedFill} />

@@ -146,15 +146,15 @@
                     colorData(formattedLombraData, null, meanColorLombra)
                 );
             // WHAPLES
-            case "rounding-7":
+            case "rounding-6":
                 return colorData(formattedWhaplesData, "sourceColor");
-            case "rounding-8":
+            case "rounding-7":
                 return colorData(formattedWhaplesData, "remainderColor");
-            case "rounding-9":
+            case "rounding-8":
                 return orderData(
                     colorData(formattedWhaplesData, "remainderColor")
                 );
-            case "rounding-10":
+            case "rounding-9":
                 return orderData(
                     colorData(formattedWhaplesData, null, meanColorWhaples)
                 );
@@ -164,7 +164,7 @@
     };
 
     $: tweenedData = setData($activeBlock); //rerun every time step gets updated
-    $: console.log(tweenedData);
+    $: console.log($activeBlock);
 </script>
 
 <style>
