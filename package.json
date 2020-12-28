@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "csv-loader": "^3.0.3",
+    "d3-ease": "^2.0.0",
     "d3-interpolate": "^2.0.1",
     "d3-scale": "^3.2.3",
     "lodash": "^4.17.20",
