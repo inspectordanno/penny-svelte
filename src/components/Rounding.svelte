@@ -13,7 +13,7 @@
         lightRed: "#e4a19d",
         gray: "#d3d3d3",
         lightGreen: "#70866f",
-        green: "6aaa6a",
+        green: "#6aaa6a",
         lightBlue: "#cce7ff",
         lavender: "#e6e6fa",
     };
@@ -78,6 +78,7 @@
                 remainderColor,
                 x,
                 y,
+                id: 0,
             };
         });
 
@@ -133,34 +134,37 @@
         switch (dataStep) {
             // LOMBRA
             case "rounding-2":
-                return colorData(sampledLombraData, "sourceColor");
+                return colorData(formattedLombraData, "sourceColor");
             case "rounding-3":
-                return colorData(sampledLombraData, "remainderColor");
+                return colorData(formattedLombraData, "remainderColor");
             case "rounding-4":
                 return orderData(
-                    colorData(sampledLombraData, "remainderColor")
+                    colorData(formattedLombraData, "remainderColor")
                 );
             case "rounding-5":
                 return orderData(
-                    colorData(sampledLombraData, null, meanColorLombra)
+                    colorData(formattedLombraData, null, meanColorLombra)
                 );
             // WHAPLES
             case "rounding-7":
-                return colorData(sampledWhaplesData, "sourceColor");
+                return colorData(formattedWhaplesData, "sourceColor");
             case "rounding-8":
-                return colorData(sampledWhaplesData, "remainderColor");
+                return colorData(formattedWhaplesData, "remainderColor");
             case "rounding-9":
                 return orderData(
-                    colorData(sampledWhaplesData, "remainderColor")
+                    colorData(formattedWhaplesData, "remainderColor")
                 );
             case "rounding-10":
                 return orderData(
-                    colorData(sampledLombraData, null, meanColorWhaples)
+                    colorData(formattedWhaplesData, null, meanColorWhaples)
                 );
+            default:
+                return colorData(formattedLombraData, "sourceColor");
         }
     };
 
     $: tweenedData = setData($activeBlock); //rerun every time step gets updated
+    $: console.log(tweenedData);
 </script>
 
 <style>
@@ -173,8 +177,13 @@
         alt="rounding-overview" />
 {:else}
     <svg width={`${gridWidth}px`} height={`${gridHeight}px`}>
-        {#each tweenedData as { x, y, fill }}
-            <Rect {x} {y} width={rectWidth} height={rectHeight} {fill} />
+        {#each tweenedData as datum (datum.id)}
+            <Rect
+                x={datum.x}
+                y={datum.y}
+                width={rectWidth}
+                height={rectHeight}
+                fill={datum.fill} />
         {/each}
     </svg>
 {/if}

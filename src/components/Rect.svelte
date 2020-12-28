@@ -10,7 +10,13 @@
 
     const tweenedX = tweened(x);
     const tweenedY = tweened(y);
-    const tweenedFill = tweened(fill, { interpolate: interpolateRgb });
+    const tweenedFill = tweened(fill, {
+        interpolate: interpolateRgb,
+    });
+
+    $: $tweenedX = x;
+    $: $tweenedX = y;
+    $: $tweenedFill = fill;
 </script>
 
-<rect x={$tweenedX} y={tweenedY} {width} {height} fill={$tweenedFill} />
+<rect x={$tweenedX} y={$tweenedY} {width} {height} fill={$tweenedFill} />
