@@ -8,8 +8,8 @@
     import whaplesData from "../../public/assets/whaples_sample.csv";
     import Rect from "./Rect.svelte";
 
-    //to-do: improve animation timing
-    //setup promise-timing for animation chaining? depending on the activeBlock that is active (in Rect.svelte)
+    //to-do: improve animation timing akin to https://penny.fyi
+    //setup promise-timing for animation chaining? customize based on the activeBlock (in Rect.svelte)
 
     const colors = {
         red: "#e96a6a",
