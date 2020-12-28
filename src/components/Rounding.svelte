@@ -8,6 +8,9 @@
     import whaplesData from "../../public/assets/whaples_sample.csv";
     import Rect from "./Rect.svelte";
 
+    //to-do: improve animation timing
+    //setup promise-timing for animation chaining? depending on the activeBlock that is active (in Rect.svelte)
+
     const colors = {
         red: "#e96a6a",
         lightRed: "#e4a19d",
@@ -72,7 +75,7 @@
             return {
                 x,
                 y,
-                id: i,
+                id: `${dataSource}-${i}`,
                 price,
                 priceRounded,
                 remainder,
@@ -164,7 +167,6 @@
     };
 
     $: tweenedData = setData($activeBlock); //rerun every time step gets updated
-    $: console.log($activeBlock);
 </script>
 
 <style>
